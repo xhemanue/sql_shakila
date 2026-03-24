@@ -82,10 +82,10 @@ FROM film f;
 
 -- 11. Encuentra lo que costó el penultimo alquiler ordenado por día.
 
-SELECT p.amount
+SELECT  p.amount
   FROM payment p 
  ORDER BY p.payment_date DESC 
- LIMIT 1 OFFSET 2;
+ LIMIT 1 OFFSET 1;
 
 -- 12. Encuentra el título de las películas en la tabla “film” que no sean ni ‘NC17’ ni ‘G’ en cuanto a su clasificación.
 
@@ -241,7 +241,7 @@ select f.film_id as "ID",
   FROM film f
   LEFT JOIN film_actor fa ON f.film_id = fa.film_id
   LEFT JOIN actor a ON fa.actor_id = a.actor_id
-  order by "Película"
+  order by "Película";
 
 
 -- 32. Obtener todos los actores y mostrar las películas en las que han actuado, incluso si algunos actores no han actuado en ninguna película.
@@ -445,7 +445,7 @@ SELECT c.customer_id,
        COUNT(r.rental_id) AS total_alquileres
   FROM customer c
   INNER JOIN rental r ON c.customer_id = r.customer_id
- GROUP BY c.customer_id;
+ GROUP BY c.customer_id, c.first_name, c.last_name;
 
 -- NOTA: Para verificar que la tabla temporal se creó correctamente:
 SELECT * FROM cliente_rentas_temporal;
@@ -540,7 +540,7 @@ SELECT DISTINCT f.title
 SELECT f.title
   FROM film f
   JOIN film_category fc ON f.film_id = fc.film_id
- WHERE fc.category_id = (
+ WHERE fc.category_id in (
     SELECT category_id FROM category WHERE name = 'Animation'
  );
 
@@ -616,4 +616,3 @@ SELECT c.customer_id, c.first_name, c.last_name, COUNT(r.rental_id) AS "Total_Al
   FROM customer c
   JOIN rental r ON c.customer_id = r.customer_id
  GROUP BY c.customer_id, c.first_name, c.last_name;
-
